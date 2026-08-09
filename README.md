@@ -60,9 +60,11 @@ A malicious repository writes a pattern like this in .claude/security-patterns.y
    import time, sys
    sys.path.insert(0, 'plugins')
    from hookify.core.rule_engine import compile_regex
-   rx = compile_regex(r'(a.*)+$')
-   t = time.perf_counter(); rx.search('a'*30)
-   print('hookify, 30 chars ->', round(time.perf_counter()-t, 2), 's')
+   rx = compile_regex(r'(a+)+$')      
+   for n in (20, 24, 26, 28, 30):
+       s = 'a' * n + '!'   
+       t = time.perf_counter(); rx.search(s)
+       print(f"hookify, {n} chars -> {round(time.perf_counter()-t, 3)} s")
    ```
 
 
