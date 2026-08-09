@@ -28,14 +28,18 @@ A malicious repository writes a pattern like this in .claude/security-patterns.y
 
 **1)** The weak check accepts a dangerous regex (security-guidance):
    ```python
-   import re, sys, time
+   import re, time
+   pat = r'(a+){2,}$'
+   import sys
    sys.path.insert(0, 'plugins/security-guidance/hooks')
    from extensibility import _has_redos_structure as guard
-   pat = r'(a+){2,}$'
-   print('does the guard flag this as dangerous?', guard(pat))   # prints False = accepted!
-   for n in (20, 24, 28, 30):
-       t = time.perf_counter(); re.search(pat, 'a'*n)
-       print(n, 'chars ->', round(time.perf_counter()-t, 3), 's')
+   print("guard says dangerous?", guard(pat))   
+   for n in (20, 24, 26, 28):
+       s = 'a' * n + '!'                         
+       print(f"testing n={n}, string ends with: {s[-3:]!r}") 
+       t = time.perf_counter()
+       re.search(pat, s)
+       print(f"   {n} chars -> {round(time.perf_counter()-t, 3)} s")
    ```
 
   **Other patterns that also slip past the check:
