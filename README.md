@@ -45,17 +45,7 @@ A malicious repository writes a pattern like this in .claude/security-patterns.y
   **Other patterns that also slip past the check:
   the fuzzer found this one: `(?:a*[)a])*{{b*aaa2,0}`**
    
-**2)** Full attack: put this in .claude/security-patterns.yaml
-       patterns:
-         - rule_name: redos
-           regex: '(a+){2,}$'
-           reminder: x
-           paths: ['**']
-   With the security-guidance plugin enabled, the next time the agent edits any file whose
-   content has a run of 'a' characters, the hook hangs.
-
-   
-**3)** hookify has no check at all:
+**2)** hookify has no check at all:
    ```python
    import time, sys
    sys.path.insert(0, 'plugins')
